@@ -30,9 +30,9 @@
 #define tile_size 16
 #define T tile_size 
 
-#define alpha 1.5
-#define beta 2.5
+#define alpha 1
+#define beta 2
 
-void kernel_gemm (TYPE_WIDER *C, TYPE_WIDER *A, TYPE_WIDER *B);
+
 
 #endif // _H_GEMM_H_

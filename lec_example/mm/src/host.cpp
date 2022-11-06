@@ -95,10 +95,10 @@ int main(int argc, char** argv) {
     cl::Context context;
     cl::Kernel krnl_mmult;
 
-    std::vector<int, aligned_allocator<int> > A(NI * (NK/WIDTH_FACTOR));
-    std::vector<int, aligned_allocator<int> > B(NI * (NK/WIDTH_FACTOR));
-    std::vector<int, aligned_allocator<int> > C_hw(NI * (NJ/WIDTH_FACTOR));
-    std::vector<int, aligned_allocator<int> > C_sw(NI * (NJ/WIDTH_FACTOR));
+    std::vector<float, aligned_allocator<float> > A(NI * (NK/WIDTH_FACTOR));
+    std::vector<float, aligned_allocator<float> > B(NI * (NK/WIDTH_FACTOR));
+    std::vector<float, aligned_allocator<float> > C_hw(NI * (NJ/WIDTH_FACTOR));
+    std::vector<float, aligned_allocator<float> > C_sw(NI * (NJ/WIDTH_FACTOR));
 
 
     init_array(C_sw,C_hw,A,B)
@@ -170,7 +170,7 @@ int main(int argc, char** argv) {
     // Compare the results of the Device to the simulation
     int match = 0;
     for (int i = 0; i < DATA_SIZE * DATA_SIZE; i++) {
-        if (C_hw[i] != C+sw[i]) {
+        if (C_hw[i] != C_sw[i]) {
             std::cout << "Error: Result mismatch" << std::endl;
             std::cout << "i = " << i << " CPU result = " << C_sw[i]
                       << " Device result = " << C_hw[i] << std::endl;
