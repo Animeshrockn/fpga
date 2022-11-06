@@ -104,8 +104,34 @@ int main(int argc, char** argv) {
     
 
 
-    init_array(C_sw,A1,B1);
-    kernel_gemm_sw(C_sw,A1,B1);
+    int i, j;
+
+  for (i = 0; i < NI; i++)
+    for (j = 0; j < NJ; j++)
+      C_sw[i*NJ+j] = (float)((i*j+1) % NI) / NI;
+  for (i = 0; i < NI; i++)
+    for (j = 0; j < NK; j++)
+      A1[i*NK+j] = (float)(i*(j+1) % NK) / NK;
+  for (i = 0; i < NK; i++)
+    for (j = 0; j < NJ; j++)
+      B1[i*NJ+j] = (float)(i*(j+2) % NJ) / NJ;
+
+    int k;
+
+// => Form C := alpha*A*B + beta*C,
+//A is NIxNK
+//B is NKxNJ
+//C is NIxNJ
+  for (i = 0; i < NI; i++) {
+    for (j = 0; j < NJ; j++) {
+      C[i*NJ+j] *= beta;
+    }
+    for (j = 0; j < NJ; j++) {
+      for (k = 0; k < NK; ++k) {
+    C[i*NJ+j] += alpha * A[i*NK+k] * B[k*NJ+j];
+      }
+    }
+  }
 
     // OPENCL HOST CODE AREA START
     auto devices = xcl::get_xil_devices();
