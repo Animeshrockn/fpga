@@ -66,7 +66,7 @@ int main(int argc, char** argv) {
     cl_int err;
     cl::CommandQueue q;
     cl::Context context;
-    cl::Kernel krnl_kernel_gemm;
+    cl::Kernel krnl_mmult;
 
     std::vector<int, aligned_allocator<int> > source_in1(matrix_size_bytes);
     std::vector<int, aligned_allocator<int> > source_in2(matrix_size_bytes);
@@ -100,7 +100,7 @@ int main(int argc, char** argv) {
             std::cout << "Failed to program device[" << i << "] with xclbin file!\n";
         } else {
             std::cout << "Device[" << i << "]: program successful!\n";
-            OCL_CHECK(err, krnl_kernel_gemm = cl::Kernel(program, "kernel_gemm", &err));
+            OCL_CHECK(err, krnl_mmult = cl::Kernel(program, "mmult", &err));
             valid_device = true;
             break; // we break because we found a valid device
         }
@@ -115,21 +115,21 @@ int main(int argc, char** argv) {
                                          source_in1.data(), &err));
     OCL_CHECK(err, cl::Buffer buffer_in2(context, CL_MEM_USE_HOST_PTR | CL_MEM_READ_ONLY, matrix_size_bytes,
                                          source_in2.data(), &err));
-    OCL_CHECK(err, cl::Buffer buffer_output(context, CL_MEM_USE_HOST_PTR | CL_MEM_READ_WRITE, matrix_size_bytes,
+    OCL_CHECK(err, cl::Buffer buffer_output(context, CL_MEM_USE_HOST_PTR | CL_MEM_WRITE_ONLY, matrix_size_bytes,
                                             source_hw_results.data(), &err));
 
-    //int size = DATA_SIZE;
+    int size = DATA_SIZE;
 
-    OCL_CHECK(err, err = krnl_kernel_gemm.setArg(0, buffer_in1));
-    OCL_CHECK(err, err = krnl_kernel_gemm.setArg(1, buffer_in2));
-    OCL_CHECK(err, err = krnl_kernel_gemm.setArg(2, buffer_output));
-    //OCL_CHECK(err, err = krnl_kernel_gemm.setArg(3, alpha));
-    //OCL_CHECK(err, err = krnl_kernel_gemm.setArg(4, beta));
+    OCL_CHECK(err, err = krnl_mmult.setArg(0, buffer_in1));
+    OCL_CHECK(err, err = krnl_mmult.setArg(1, buffer_in2));
+    OCL_CHECK(err, err = krnl_mmult.setArg(2, buffer_output));
+    OCL_CHECK(err, err = krnl_mmult.setArg(3, size));
+
     // Copy input data to device global memory
     OCL_CHECK(err, err = q.enqueueMigrateMemObjects({buffer_in1, buffer_in2}, 0 /* 0 means from host*/));
 
     // Launch the Kernel
-    OCL_CHECK(err, err = q.enqueueTask(krnl_kernel_gemm));
+    OCL_CHECK(err, err = q.enqueueTask(krnl_mmult));
     q.finish();
 
     // Copy Result from Device Global Memory to Host Local Memory
@@ -139,7 +139,7 @@ int main(int argc, char** argv) {
     // OPENCL HOST CODE AREA END
 
     // Compute Software Results
-    kernel_gemm_sw(source_sw_results, source_in1, source_in2, alpha, beta);
+    m_softwareGold(source_in1, source_in2, source_sw_results);
 
     // Compare the results of the Device to the simulation
     int match = 0;
