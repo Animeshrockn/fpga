@@ -44,7 +44,7 @@ endif
 
 ############################## Setting up Project Variables ##############################
 #################Make Your Changes Here####################
-MY_KERNEL_NAME = mmult
+MY_KERNEL_NAME = kernel_gemm
 #################Make Your Changes Here####################
 
 TARGET := hw
@@ -102,9 +102,9 @@ xclbin: build
 # If you have another FPGA design file (not host code file), e.g., src/mmult2.cpp
 
 # 1. Add the .xo compilation here:
-$(TEMP_DIR)/mmult2.xo: src/kernel_gemm.cpp src/kernel_gemm.h
+$(TEMP_DIR)/kernel_gemm.xo: src/kernel_gemm.cpp src/kernel_gemm.h
 	mkdir -p $(TEMP_DIR)
-	v++ $(VPP_FLAGS) $(VPP_FLAGS_$(MY_KERNEL_NAME)) -c -k mmult2 --temp_dir $(TEMP_DIR)  -I'$(<D)' -o'$@' '$<'
+	v++ $(VPP_FLAGS) $(VPP_FLAGS_$(MY_KERNEL_NAME)) -c -k kernel_gemm --temp_dir $(TEMP_DIR)  -I'$(<D)' -o'$@' '$<'
 # 2. And change the following xclbin compilation dependency to:
 
 #################Make Your Changes Here####################

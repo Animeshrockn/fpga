@@ -35,26 +35,50 @@ Description:
 
 // Software implementation of Matrix Multiplication
 // The inputs are of the size (DATA_SIZE x DATA_SIZE)
-'''
-void m_softwareGold(std::vector<int, aligned_allocator<int> >& in1, // Input Matrix 1
-                    std::vector<int, aligned_allocator<int> >& in2, // Input Matrix 2
-                    std::vector<int, aligned_allocator<int> >& out  // Output Matrix
-                    ) {
-    // Perform Matrix multiply Out = In1 x In2
-    for (int i = 0; i < DATA_SIZE; i++) {
-        for (int j = 0; j < DATA_SIZE; j++) {
-            for (int k = 0; k < DATA_SIZE; k++) {
-                out[i * DATA_SIZE + j] += in1[i * DATA_SIZE + k] * in2[k * DATA_SIZE + j];
-            }
-        }
-    }
+
+void init_array(float C_sw[NI*NJ],float C_hw[NI*NJ], float A[NI*NK], float B[NK*NJ])
+{
+  int i, j;
+
+  for (i = 0; i < NI; i++)
+    for (j = 0; j < NJ; j++)
+      C_sw[i*NJ+j] = (float)((i*j+1) % NI) / NI;
+      C_hw[i*NJ+j] = (float)((i*j+1) % NI) / NI;
+  for (i = 0; i < NI; i++)
+    for (j = 0; j < NK; j++)
+      A[i*NK+j] = (float)(i*(j+1) % NK) / NK;
+  for (i = 0; i < NK; i++)
+    for (j = 0; j < NJ; j++)
+      B[i*NJ+j] = (float)(i*(j+2) % NJ) / NJ;
 }
-'''
+
+void kernel_gemm_sw(float C[NI*NJ], float A[NI*NK], float B[NK*NJ], float alpha, float beta)
+{
+  int i, j, k;
+
+// => Form C := alpha*A*B + beta*C,
+//A is NIxNK
+//B is NKxNJ
+//C is NIxNJ
+  for (i = 0; i < NI; i++) {
+    for (j = 0; j < NJ; j++) {
+      C[i*NJ+j] *= beta;
+    }
+    for (j = 0; j < NJ; j++) {
+      for (k = 0; k < NK; ++k) {
+    C[i*NJ+j] += alpha * A[i*NK+k] * B[k*NJ+j];
+      }
+    }
+  }
+}
+
 int main(int argc, char** argv) {
     if (argc != 2) {
         std::cout << "Usage: " << argv[0] << " <XCLBIN File>" << std::endl;
         return EXIT_FAILURE;
     }
+
+
 
     std::string binaryFile = argv[1];
 
@@ -76,25 +100,10 @@ int main(int argc, char** argv) {
     std::vector<int, aligned_allocator<int> > C_hw(NI * (NJ/WIDTH_FACTOR));
     std::vector<int, aligned_allocator<int> > C_sw(NI * (NJ/WIDTH_FACTOR));
 
-    // Create the test data and Software Result
-    for (int i = 0; i < DATA_SIZE * DATA_SIZE; i++) {
-        source_in1[i] = i;
-        source_in2[i] = i * i;
-        source_sw_results[i] = 0;
-        source_hw_results[i] = 0;
-    }
 
-    for (i = 0; i < NI; i++)
-    for (j = 0; j < NJ; j++){
-      C_sw[i*NJ+j] = (float)((i*j+1) % NI) / NI;
-      //printf("C[i][j] = %f\n\n",C[i*NJ+j]);
-        }
-        for (i = 0; i < NI; i++)
-            for (j = 0; j < NK; j++)
-                A[i*NK+j] = (float)((i*j+1) % NK) / NK;
-        for (i = 0; i < NK; i++)
-            for (j = 0; j < NJ; j++)
-                B[i*NJ+j] = (float)(i*(j+2) % NJ) / NJ;
+    init_array(C_sw,C_hw,A,B)
+    
+    kernel_gemm_sw(C_sw,A,B)
 
     // OPENCL HOST CODE AREA START
     auto devices = xcl::get_xil_devices();
@@ -156,15 +165,15 @@ int main(int argc, char** argv) {
     // OPENCL HOST CODE AREA END
 
     // Compute Software Results
-    m_softwareGold(source_in1, source_in2, source_sw_results);
+    //m_softwareGold(source_in1, source_in2, source_sw_results);
 
     // Compare the results of the Device to the simulation
     int match = 0;
     for (int i = 0; i < DATA_SIZE * DATA_SIZE; i++) {
-        if (source_hw_results[i] != source_sw_results[i]) {
+        if (C_hw[i] != C+sw[i]) {
             std::cout << "Error: Result mismatch" << std::endl;
-            std::cout << "i = " << i << " CPU result = " << source_sw_results[i]
-                      << " Device result = " << source_hw_results[i] << std::endl;
+            std::cout << "i = " << i << " CPU result = " << C_sw[i]
+                      << " Device result = " << C_hw[i] << std::endl;
             match = 1;
             break;
         }
