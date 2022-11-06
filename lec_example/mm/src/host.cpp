@@ -36,23 +36,22 @@ Description:
 // Software implementation of Matrix Multiplication
 // The inputs are of the size (DATA_SIZE x DATA_SIZE)
 
-void init_array(float C_sw[NI*NJ],float C_hw[NI*NJ], float A[NI*NK], float B[NK*NJ])
+void init_array(float C_sw[NI*NJ],float A1[NI*NK], float B1[NK*NJ])
 {
   int i, j;
 
   for (i = 0; i < NI; i++)
     for (j = 0; j < NJ; j++)
       C_sw[i*NJ+j] = (float)((i*j+1) % NI) / NI;
-      C_hw[i*NJ+j] = (float)((i*j+1) % NI) / NI;
   for (i = 0; i < NI; i++)
     for (j = 0; j < NK; j++)
-      A[i*NK+j] = (float)(i*(j+1) % NK) / NK;
+      A1[i*NK+j] = (float)(i*(j+1) % NK) / NK;
   for (i = 0; i < NK; i++)
     for (j = 0; j < NJ; j++)
-      B[i*NJ+j] = (float)(i*(j+2) % NJ) / NJ;
+      B1[i*NJ+j] = (float)(i*(j+2) % NJ) / NJ;
 }
 
-void kernel_gemm_sw(float C[NI*NJ], float A[NI*NK], float B[NK*NJ], float alpha, float beta)
+void kernel_gemm_sw(float C[NI*NJ], float A[NI*NK], float B[NK*NJ])
 {
   int i, j, k;
 
@@ -95,15 +94,18 @@ int main(int argc, char** argv) {
     cl::Context context;
     cl::Kernel krnl_mmult;
 
+    std::vector<float, aligned_allocator<float> > A1(NI * (NK));
+    std::vector<float, aligned_allocator<float> > B1(NI * (NK));
+    std::vector<float, aligned_allocator<float> > C_sw(NI * (NJ));
+
     std::vector<float, aligned_allocator<float> > A(NI * (NK/WIDTH_FACTOR));
     std::vector<float, aligned_allocator<float> > B(NI * (NK/WIDTH_FACTOR));
     std::vector<float, aligned_allocator<float> > C_hw(NI * (NJ/WIDTH_FACTOR));
-    std::vector<float, aligned_allocator<float> > C_sw(NI * (NJ/WIDTH_FACTOR));
-
-
-    init_array(C_sw,C_hw,A,B)
     
-    kernel_gemm_sw(C_sw,A,B)
+
+
+    init_array(C_sw,A1,B1);
+    kernel_gemm_sw(C_sw,A1,B1);
 
     // OPENCL HOST CODE AREA START
     auto devices = xcl::get_xil_devices();
@@ -161,7 +163,6 @@ int main(int argc, char** argv) {
     // Copy Result from Device Global Memory to Host Local Memory
     OCL_CHECK(err, err = q.enqueueMigrateMemObjects({buffer_output}, CL_MIGRATE_MEM_OBJECT_HOST));
     q.finish();
-
     // OPENCL HOST CODE AREA END
 
     // Compute Software Results
