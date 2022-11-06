@@ -1,5 +1,0 @@
-kernel_gemm_fadd_bkb
-kernel_gemm_fmul_cud
-kernel_gemm_ctrl_bus_s_axi
-kernel_gemm_func_bus_m_axi
-kernel_gemm

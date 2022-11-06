@@ -1,9 +1,0 @@
-kernel_gemm_fadd_bkb
-kernel_gemm_fmul_cud
-kernel_gemm_localdEe
-kernel_gemm_localhbi
-kernel_gemm_control_s_axi
-kernel_gemm_gmem_m_axi
-load
-compute
-kernel_gemm
