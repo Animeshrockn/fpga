@@ -1,0 +1,241 @@
+==============================================================
+Vivado(TM) HLS - High-Level Synthesis from C, C++ and SystemC v2020.1 (64-bit)
+Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
+==============================================================
+INFO: [HLS 200-10] Setting target device to 'xcu200-fsgd2104-2-e'
+INFO: [SYN 201-201] Setting up clock 'default' with a period of 3.33ns.
+INFO: [SCHED 204-61] Option 'relax_ii_for_timing' is enabled, will increase II to preserve clock frequency constraints.
+INFO: [HLS 200-10] Analyzing design file 'kernel_gemm.cpp' ... 
+ERROR: [HLS 200-70] Compilation errors found: In file included from kernel_gemm.cpp:1:
+kernel_gemm.cpp:2:26: error: use of undeclared identifier 'NI'
+void kernel_gemm(float C[NI*NJ], float A[NI*NK], float B[NK*NJ], const float alpha, const float beta){
+                         ^
+kernel_gemm.cpp:2:29: error: use of undeclared identifier 'NJ'
+void kernel_gemm(float C[NI*NJ], float A[NI*NK], float B[NK*NJ], const float alpha, const float beta){
+                            ^
+kernel_gemm.cpp:2:42: error: use of undeclared identifier 'NI'
+void kernel_gemm(float C[NI*NJ], float A[NI*NK], float B[NK*NJ], const float alpha, const float beta){
+                                         ^
+kernel_gemm.cpp:2:45: error: use of undeclared identifier 'NK'
+void kernel_gemm(float C[NI*NJ], float A[NI*NK], float B[NK*NJ], const float alpha, const float beta){
+                                            ^
+kernel_gemm.cpp:2:58: error: use of undeclared identifier 'NK'
+void kernel_gemm(float C[NI*NJ], float A[NI*NK], float B[NK*NJ], const float alpha, const float beta){
+                                                         ^
+kernel_gemm.cpp:2:61: error: use of undeclared identifier 'NJ'
+void kernel_gemm(float C[NI*NJ], float A[NI*NK], float B[NK*NJ], const float alpha, const float beta){
+                                                            ^
+kernel_gemm.cpp:13:2: error: use of undeclared identifier 'TYPE'
+ TYPE local_A [tile_size][tile_size];
+ ^
+kernel_gemm.cpp:14:5: error: use of undeclared identifier 'TYPE'
+    TYPE local_B [tile_size][tile_size];
+    ^
+kernel_gemm.cpp:15:5: error: use of undeclared identifier 'TYPE'
+    TYPE local_C[tile_size][tile_size];
+    ^
+kernel_gemm.cpp:18:5: error: use of undeclared identifier 'TYPE'
+    TYPE mult, sum;
+    ^
+kernel_gemm.cpp:20:20: error: use of undeclared identifier 'row_size'
+    for(i = 0; i < row_size; i += tile_size)
+                   ^
+kernel_gemm.cpp:20:35: error: use of undeclared identifier 'tile_size'
+    for(i = 0; i < row_size; i += tile_size)
+                                  ^
+kernel_gemm.cpp:21:24: error: use of undeclared identifier 'col_size'
+        for(j = 0; j < col_size; j += tile_size){
+                       ^
+kernel_gemm.cpp:21:39: error: use of undeclared identifier 'tile_size'
+        for(j = 0; j < col_size; j += tile_size){
+                                      ^
+kernel_gemm.cpp:24:30: error: use of undeclared identifier 'tile_size'
+            for(ii = 0; ii < tile_size; ii++)
+                             ^
+kernel_gemm.cpp:25:34: error: use of undeclared identifier 'tile_size'
+                for(jj = 0; jj < tile_size; jj++)
+                                 ^
+kernel_gemm.cpp:27:2: error: use of undeclared identifier 'local_C'
+ local_C[ii][jj] = beta*C[(i+ii)col_size + (j+jj)];
+ ^
+kernel_gemm.cpp:27:33: error: expected ']'
+ local_C[ii][jj] = beta*C[(i+ii)col_size + (j+jj)];
+                                ^
+kernel_gemm.cpp:27:26: note: to match this '['
+ local_C[ii][jj] = beta*C[(i+ii)col_size + (j+jj)];
+                         ^
+kernel_gemm.cpp:30:28: error: use of undeclared identifier 'col_size'
+            for(k = 0; k < col_size; k += tile_size){
+                           ^
+fatal error: too many errors emitted, stopping now [-ferror-limit=]
+20 errors generated.
+==============================================================
+Vivado(TM) HLS - High-Level Synthesis from C, C++ and SystemC v2020.1 (64-bit)
+Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
+==============================================================
+==============================================================
+Vivado(TM) HLS - High-Level Synthesis from C, C++ and SystemC v2020.1 (64-bit)
+Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
+==============================================================
+==============================================================
+Vivado(TM) HLS - High-Level Synthesis from C, C++ and SystemC v2020.1 (64-bit)
+Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
+==============================================================
+==============================================================
+Vivado(TM) HLS - High-Level Synthesis from C, C++ and SystemC v2020.1 (64-bit)
+Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
+==============================================================
+==============================================================
+Vivado(TM) HLS - High-Level Synthesis from C, C++ and SystemC v2020.1 (64-bit)
+Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
+==============================================================
+==============================================================
+Vivado(TM) HLS - High-Level Synthesis from C, C++ and SystemC v2020.1 (64-bit)
+Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
+==============================================================
+==============================================================
+Vivado(TM) HLS - High-Level Synthesis from C, C++ and SystemC v2020.1 (64-bit)
+Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
+==============================================================
+==============================================================
+Vivado(TM) HLS - High-Level Synthesis from C, C++ and SystemC v2020.1 (64-bit)
+Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
+==============================================================
+==============================================================
+Vivado(TM) HLS - High-Level Synthesis from C, C++ and SystemC v2020.1 (64-bit)
+Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
+==============================================================
+==============================================================
+Vivado(TM) HLS - High-Level Synthesis from C, C++ and SystemC v2020.1 (64-bit)
+Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
+==============================================================
+==============================================================
+Vivado(TM) HLS - High-Level Synthesis from C, C++ and SystemC v2020.1 (64-bit)
+Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
+==============================================================
+==============================================================
+Vivado(TM) HLS - High-Level Synthesis from C, C++ and SystemC v2020.1 (64-bit)
+Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
+==============================================================
+==============================================================
+Vivado(TM) HLS - High-Level Synthesis from C, C++ and SystemC v2020.1 (64-bit)
+Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
+==============================================================
+==============================================================
+Vivado(TM) HLS - High-Level Synthesis from C, C++ and SystemC v2020.1 (64-bit)
+Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
+==============================================================
+==============================================================
+Vivado(TM) HLS - High-Level Synthesis from C, C++ and SystemC v2020.1 (64-bit)
+Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
+==============================================================
+==============================================================
+Vivado(TM) HLS - High-Level Synthesis from C, C++ and SystemC v2020.1 (64-bit)
+Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
+==============================================================
+==============================================================
+Vivado(TM) HLS - High-Level Synthesis from C, C++ and SystemC v2020.1 (64-bit)
+Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
+==============================================================
+==============================================================
+Vivado(TM) HLS - High-Level Synthesis from C, C++ and SystemC v2020.1 (64-bit)
+Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
+==============================================================
+==============================================================
+Vivado(TM) HLS - High-Level Synthesis from C, C++ and SystemC v2020.1 (64-bit)
+Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
+==============================================================
+INFO: [HLS 200-10] Setting target device to 'xcu200-fsgd2104-2-e'
+INFO: [SYN 201-201] Setting up clock 'default' with a period of 3.33ns.
+INFO: [SCHED 204-61] Option 'relax_ii_for_timing' is enabled, will increase II to preserve clock frequency constraints.
+INFO: [HLS 200-10] Analyzing design file 'kernel_gemm.cpp' ... 
+INFO: [HLS 200-111] Finished Linking Time (s): cpu = 00:00:09 ; elapsed = 00:00:08 . Memory (MB): peak = 1697.363 ; gain = 1204.301 ; free physical = 116297 ; free virtual = 190712
+INFO: [HLS 200-111] Finished Checking Pragmas Time (s): cpu = 00:00:09 ; elapsed = 00:00:08 . Memory (MB): peak = 1697.363 ; gain = 1204.301 ; free physical = 116297 ; free virtual = 190712
+INFO: [HLS 200-10] Starting code transformations ...
+INFO: [HLS 200-111] Finished Standard Transforms Time (s): cpu = 00:00:10 ; elapsed = 00:00:09 . Memory (MB): peak = 1697.363 ; gain = 1204.301 ; free physical = 116297 ; free virtual = 190711
+INFO: [HLS 200-10] Checking synthesizability ...
+INFO: [HLS 200-111] Finished Checking Synthesizability Time (s): cpu = 00:00:10 ; elapsed = 00:00:09 . Memory (MB): peak = 1697.363 ; gain = 1204.301 ; free physical = 116297 ; free virtual = 190711
+INFO: [HLS 200-111] Finished Pre-synthesis Time (s): cpu = 00:00:10 ; elapsed = 00:00:09 . Memory (MB): peak = 1697.363 ; gain = 1204.301 ; free physical = 116277 ; free virtual = 190692
+INFO: [XFORM 203-541] Flattening a loop nest 'Loop-1.1.1' (kernel_gemm.cpp:19:27) in function 'kernel_gemm'.
+INFO: [XFORM 203-541] Flattening a loop nest 'Loop-1.1.2.1' (kernel_gemm.cpp:26:31) in function 'kernel_gemm'.
+INFO: [XFORM 203-541] Flattening a loop nest 'Loop-1.1.2.2' (kernel_gemm.cpp:31:31) in function 'kernel_gemm'.
+WARNING: [XFORM 203-542] Cannot flatten a loop nest 'Loop-1.1.2' (kernel_gemm.cpp:24:26) in function 'kernel_gemm' : 
+
+more than one sub loop.
+INFO: [XFORM 203-541] Flattening a loop nest 'Loop-1.1.3' (kernel_gemm.cpp:42:20) in function 'kernel_gemm'.
+WARNING: [XFORM 203-542] Cannot flatten a loop nest 'Loop-1.1' (kernel_gemm.cpp:17:22) in function 'kernel_gemm' : 
+
+more than one sub loop.
+INFO: [XFORM 203-541] Flattening a loop nest 'Loop-1' (kernel_gemm.cpp:16:18) in function 'kernel_gemm'.
+INFO: [HLS 200-444] Inferring multiple bus burst read of a total cumulative length 16 on port 'gmem' (kernel_gemm.cpp:22:2). These data requests might be further partitioned to multiple requests during RTL generation, based on max_read_burst_length or max_write_burst_length settings.
+INFO: [HLS 200-444] Inferring multiple bus burst read of a total cumulative length 16 on port 'gmem' (kernel_gemm.cpp:29:2). These data requests might be further partitioned to multiple requests during RTL generation, based on max_read_burst_length or max_write_burst_length settings.
+INFO: [HLS 200-444] Inferring multiple bus burst read of a total cumulative length 16 on port 'gmem' (kernel_gemm.cpp:34:2). These data requests might be further partitioned to multiple requests during RTL generation, based on max_read_burst_length or max_write_burst_length settings.
+INFO: [HLS 200-444] Inferring multiple bus burst write of a total cumulative length 16 on port 'gmem' (kernel_gemm.cpp:45:2). These data requests might be further partitioned to multiple requests during RTL generation, based on max_read_burst_length or max_write_burst_length settings.
+INFO: [HLS 200-472] Inferring partial write operation for 'local_C' (kernel_gemm.cpp:22:2)
+INFO: [HLS 200-472] Inferring partial write operation for 'local_A' (kernel_gemm.cpp:29:2)
+INFO: [HLS 200-472] Inferring partial write operation for 'local_B' (kernel_gemm.cpp:34:2)
+INFO: [HLS 200-472] Inferring partial write operation for 'local_C' (kernel_gemm.cpp:39:29)
+INFO: [HLS 200-111] Finished Architecture Synthesis Time (s): cpu = 00:00:10 ; elapsed = 00:00:10 . Memory (MB): peak = 1697.363 ; gain = 1204.301 ; free physical = 116283 ; free virtual = 190698
+INFO: [HLS 200-10] Starting hardware synthesis ...
+INFO: [HLS 200-10] Synthesizing 'kernel_gemm' ...
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'kernel_gemm' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-61] Pipelining loop 'Loop 1.1'.
+INFO: [SCHED 204-61] Pipelining result : Target II = 1, Final II = 1, Depth = 15.
+INFO: [SCHED 204-61] Pipelining loop 'Loop 1.2.1'.
+INFO: [SCHED 204-61] Pipelining result : Target II = 1, Final II = 1, Depth = 15.
+INFO: [SCHED 204-61] Pipelining loop 'Loop 1.2.2'.
+INFO: [SCHED 204-61] Pipelining result : Target II = 1, Final II = 1, Depth = 11.
+INFO: [SCHED 204-61] Pipelining loop 'Loop 1.3'.
+INFO: [SCHED 204-61] Pipelining result : Target II = 1, Final II = 1, Depth = 9.
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111]  Elapsed time: 9.82 seconds; current allocated memory: 124.906 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111]  Elapsed time: 0.22 seconds; current allocated memory: 126.228 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'kernel_gemm' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [RTGEN 206-500] Setting interface mode on port 'kernel_gemm/gmem' to 'm_axi'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'kernel_gemm/C' to 's_axilite & ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'kernel_gemm/A' to 's_axilite & ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'kernel_gemm/B' to 's_axilite & ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'kernel_gemm/alpha' to 'ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'kernel_gemm/beta' to 'ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on function 'kernel_gemm' to 's_axilite & ap_ctrl_hs'.
+INFO: [RTGEN 206-100] Bundling port 'return', 'A' and 'B' to AXI-Lite port control.
+INFO: [SYN 201-210] Renamed object name 'kernel_gemm_fadd_32ns_32ns_32_7_full_dsp_1' to 'kernel_gemm_fadd_bkb' due to the length limit 20
+INFO: [SYN 201-210] Renamed object name 'kernel_gemm_fmul_32ns_32ns_32_4_max_dsp_1' to 'kernel_gemm_fmul_cud' due to the length limit 20
+INFO: [RTGEN 206-100] Generating core module 'kernel_gemm_fadd_bkb': 1 instance(s).
+INFO: [RTGEN 206-100] Generating core module 'kernel_gemm_fmul_cud': 1 instance(s).
+INFO: [RTGEN 206-100] Finished creating RTL model for 'kernel_gemm'.
+INFO: [HLS 200-111]  Elapsed time: 0.24 seconds; current allocated memory: 129.006 MB.
+INFO: [HLS 200-790] **** Loop Constraint Status: All loop constraints were satisfied.
+INFO: [HLS 200-789] **** Estimated Fmax: 343.20 MHz
+INFO: [RTMG 210-278] Implementing memory 'kernel_gemm_local_A_ram (RAM)' using block RAMs.
+INFO: [HLS 200-111] Finished generating all RTL models Time (s): cpu = 00:00:12 ; elapsed = 00:00:12 . Memory (MB): peak = 1697.363 ; gain = 1204.301 ; free physical = 116257 ; free virtual = 190678
+INFO: [VHDL 208-304] Generating VHDL RTL for kernel_gemm.
+INFO: [VLOG 209-307] Generating Verilog RTL for kernel_gemm.
+INFO: [COSIM 212-47] Using XSIM for RTL simulation.
+INFO: [COSIM 212-14] Instrumenting C test bench ...
+WARNING: [COSIM 212-369] AXI_master port 'C' has a depth of '4096'. Insufficient depth may result in simulation mismatch or freeze.
+WARNING: [COSIM 212-369] AXI_master port 'A' has a depth of '4096'. Insufficient depth may result in simulation mismatch or freeze.
+WARNING: [COSIM 212-369] AXI_master port 'B' has a depth of '4096'. Insufficient depth may result in simulation mismatch or freeze.
+INFO: [COSIM 212-302] Starting C TB testing ... 
+INFO: [COSIM 212-333] Generating C post check test bench ...
+INFO: [COSIM 212-12] Generating RTL test bench ...
+INFO: [COSIM 212-1] *** C/RTL co-simulation file generation completed. ***
+INFO: [COSIM 212-323] Starting verilog simulation. 
+INFO: [COSIM 212-15]==============================================================
+Vivado(TM) HLS - High-Level Synthesis from C, C++ and SystemC v2020.1 (64-bit)
+Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
+==============================================================
+==============================================================
+Vivado(TM) HLS - High-Level Synthesis from C, C++ and SystemC v2020.1 (64-bit)
+Copyright 1986-2020 Xilinx, Inc. All Rights Reserved.
+==============================================================

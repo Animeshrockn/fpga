@@ -1,0 +1,54 @@
+<profile>
+
+<section name = "Vivado HLS Report for 'kernel_gemm'" level="0">
+<item name = "Date">Wed Mar 17 10:41:52 2021
+</item>
+<item name = "Version">2020.1 (Build 2897737 on Wed May 27 20:21:37 MDT 2020)</item>
+<item name = "Project">kernel_gemm_buffering.prj</item>
+<item name = "Solution">solution1</item>
+<item name = "Product family">virtexuplus</item>
+<item name = "Target device">xcu200-fsgd2104-2-e</item>
+</section>
+
+<section name = "Performance Estimates" level="0">
+<item name = "Timing">
+<section name = "" level="1">
+<item name = "Summary"><table name="" hasTotal="0">
+<keys size="4">Clock, Target, Estimated, Uncertainty</keys>
+<column name="ap_clk">3.33 ns, 2.914 ns, 0.42 ns</column>
+</table>
+</item>
+</section>
+</item>
+<item name = "Latency">
+<section name = "" level="1">
+<item name = "Summary"><table name="" hasTotal="0">
+<keys size="8">, min, max, min, max, min, max, Type</keys>
+<column name="">120604187137, 120604187137, 401.612 sec, 401.612 sec, 120604187137, 120604187137, none</column>
+</table>
+</item>
+<item name = "Detail">
+<section name = "" level="1">
+<item name = "Instance"><table name="" hasTotal="0">
+<keys size="9">Instance, Module, min, max, min, max, min, max, Type</keys>
+</table>
+</item>
+<item name = "Loop"><table name="" hasTotal="0">
+<keys size="8">Loop Name, min, max, Latency, achieved, target, Count, Pipelined</keys>
+<column name="- ROW_PARTITION_L_COL_PARTITION_L">120604187136, 120604187136, 471110106, -, -, 256, no</column>
+<column name=" + L_LOAD_INIT_TILE_C">16397, 16397, 15, 1, 1, 16384, yes</column>
+<column name=" + LOAD_AB_AND_COMPUTE">471077312, 471077312, 29442332, -, -, 16, no</column>
+<column name="  ++ L_LOAD_INIT_TILE_A">16397, 16397, 15, 1, 1, 16384, yes</column>
+<column name="  ++ L_LOAD_B">16393, 16393, 11, 1, 1, 16384, yes</column>
+<column name="  ++ LOAD_AB_AND_COMPUTE.3">29409536, 29409536, 229762, -, -, 128, no</column>
+<column name="   +++ LOAD_AB_AND_COMPUTE.3.1">229760, 229760, 1795, -, -, 128, no</column>
+<column name="    ++++ COMPUTE_TILE_LOOP">1792, 1792, 14, -, -, 128, no</column>
+<column name=" + L_STORE_TILE_LOOP">16391, 16391, 9, 1, 1, 16384, yes</column>
+</table>
+</item>
+</section>
+</item>
+</section>
+</item>
+</section>
+</profile>
