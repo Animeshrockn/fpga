@@ -95,19 +95,21 @@ build: check-vitis check-device $(BUILD_DIR)/$(MY_KERNEL_NAME).xclbin
 xclbin: build
 
 ############################## Setting Rules for Binary Containers (Building Kernels) ##############################
-$(TEMP_DIR)/mmult.xo: src/mmult.cpp
-	mkdir -p $(TEMP_DIR)
-	v++ $(VPP_FLAGS) $(VPP_FLAGS_$(MY_KERNEL_NAME)) -c -k mmult --temp_dir $(TEMP_DIR)  -I'$(<D)' -o'$@' '$<'
+#$(TEMP_DIR)/mmult.xo: src/mmult.cpp
+#	mkdir -p $(TEMP_DIR)
+#	v++ $(VPP_FLAGS) $(VPP_FLAGS_$(MY_KERNEL_NAME)) -c -k mmult --temp_dir $(TEMP_DIR)  -I'$(<D)' -o'$@' '$<'
 #################Make Your Changes Here####################
 # If you have another FPGA design file (not host code file), e.g., src/mmult2.cpp
+
 # 1. Add the .xo compilation here:
-# $(TEMP_DIR)/mmult2.xo: src/mmult2.cpp
-#	mkdir -p $(TEMP_DIR)
-#	v++ $(VPP_FLAGS) $(VPP_FLAGS_$(MY_KERNEL_NAME)) -c -k mmult2 --temp_dir $(TEMP_DIR)  -I'$(<D)' -o'$@' '$<'
+$(TEMP_DIR)/mmult2.xo: src/kernel_gemm.cpp src/kernel_gemm.h
+	mkdir -p $(TEMP_DIR)
+	v++ $(VPP_FLAGS) $(VPP_FLAGS_$(MY_KERNEL_NAME)) -c -k mmult2 --temp_dir $(TEMP_DIR)  -I'$(<D)' -o'$@' '$<'
 # 2. And change the following xclbin compilation dependency to:
-# $(BUILD_DIR)/$(MY_KERNEL_NAME).xclbin: $(TEMP_DIR)/mmult.xo $(TEMP_DIR)/mmult2.xo
+
 #################Make Your Changes Here####################
-$(BUILD_DIR)/$(MY_KERNEL_NAME).xclbin: $(TEMP_DIR)/mmult.xo
+#$(BUILD_DIR)/$(MY_KERNEL_NAME).xclbin: $(TEMP_DIR)/mmult.xo
+$(BUILD_DIR)/$(MY_KERNEL_NAME).xclbin: $(TEMP_DIR)/kernel_gemm.xo $(TEMP_DIR)/kernel_gemm.xo
 	mkdir -p $(BUILD_DIR)
 	v++ $(VPP_FLAGS) -l $(VPP_LDFLAGS) --temp_dir $(TEMP_DIR) -o'$(LINK_OUTPUT)' $(+)
 	v++ -p $(LINK_OUTPUT) $(VPP_FLAGS) --package.out_dir $(PACKAGE_OUT) -o $(BUILD_DIR)/$(MY_KERNEL_NAME).xclbin

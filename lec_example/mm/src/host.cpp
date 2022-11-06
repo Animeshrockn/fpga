@@ -1,3 +1,4 @@
+
 /**
 * Copyright (C) 2019-2021 Xilinx, Inc
 *
@@ -24,6 +25,7 @@ Description:
 // OpenCL utility layer include
 #include "xcl2.hpp"
 #include <vector>
+#include "kernel_gemm.h"
 
 // Array Size to access
 #define DATA_SIZE 16
@@ -33,6 +35,7 @@ Description:
 
 // Software implementation of Matrix Multiplication
 // The inputs are of the size (DATA_SIZE x DATA_SIZE)
+'''
 void m_softwareGold(std::vector<int, aligned_allocator<int> >& in1, // Input Matrix 1
                     std::vector<int, aligned_allocator<int> >& in2, // Input Matrix 2
                     std::vector<int, aligned_allocator<int> >& out  // Output Matrix
@@ -46,7 +49,7 @@ void m_softwareGold(std::vector<int, aligned_allocator<int> >& in1, // Input Mat
         }
     }
 }
-
+'''
 int main(int argc, char** argv) {
     if (argc != 2) {
         std::cout << "Usage: " << argv[0] << " <XCLBIN File>" << std::endl;
@@ -68,10 +71,10 @@ int main(int argc, char** argv) {
     cl::Context context;
     cl::Kernel krnl_mmult;
 
-    std::vector<int, aligned_allocator<int> > source_in1(matrix_size_bytes);
-    std::vector<int, aligned_allocator<int> > source_in2(matrix_size_bytes);
-    std::vector<int, aligned_allocator<int> > source_hw_results(matrix_size_bytes);
-    std::vector<int, aligned_allocator<int> > source_sw_results(matrix_size_bytes);
+    std::vector<int, aligned_allocator<int> > A(NI * (NK/WIDTH_FACTOR));
+    std::vector<int, aligned_allocator<int> > B(NI * (NK/WIDTH_FACTOR));
+    std::vector<int, aligned_allocator<int> > C_hw(NI * (NJ/WIDTH_FACTOR));
+    std::vector<int, aligned_allocator<int> > C_sw(NI * (NJ/WIDTH_FACTOR));
 
     // Create the test data and Software Result
     for (int i = 0; i < DATA_SIZE * DATA_SIZE; i++) {
@@ -80,6 +83,18 @@ int main(int argc, char** argv) {
         source_sw_results[i] = 0;
         source_hw_results[i] = 0;
     }
+
+    for (i = 0; i < NI; i++)
+    for (j = 0; j < NJ; j++){
+      C_sw[i*NJ+j] = (float)((i*j+1) % NI) / NI;
+      //printf("C[i][j] = %f\n\n",C[i*NJ+j]);
+        }
+        for (i = 0; i < NI; i++)
+            for (j = 0; j < NK; j++)
+                A[i*NK+j] = (float)((i*j+1) % NK) / NK;
+        for (i = 0; i < NK; i++)
+            for (j = 0; j < NJ; j++)
+                B[i*NJ+j] = (float)(i*(j+2) % NJ) / NJ;
 
     // OPENCL HOST CODE AREA START
     auto devices = xcl::get_xil_devices();
@@ -100,7 +115,7 @@ int main(int argc, char** argv) {
             std::cout << "Failed to program device[" << i << "] with xclbin file!\n";
         } else {
             std::cout << "Device[" << i << "]: program successful!\n";
-            OCL_CHECK(err, krnl_mmult = cl::Kernel(program, "mmult", &err));
+            OCL_CHECK(err, krnl_mmult = cl::Kernel(program, "kernel_gemm", &err));
             valid_device = true;
             break; // we break because we found a valid device
         }
@@ -111,26 +126,28 @@ int main(int argc, char** argv) {
     }
 
     // Allocate Buffer in Global Memory
-    OCL_CHECK(err, cl::Buffer buffer_in1(context, CL_MEM_USE_HOST_PTR | CL_MEM_READ_ONLY, matrix_size_bytes,
-                                         source_in1.data(), &err));
-    OCL_CHECK(err, cl::Buffer buffer_in2(context, CL_MEM_USE_HOST_PTR | CL_MEM_READ_ONLY, matrix_size_bytes,
-                                         source_in2.data(), &err));
-    OCL_CHECK(err, cl::Buffer buffer_output(context, CL_MEM_USE_HOST_PTR | CL_MEM_WRITE_ONLY, matrix_size_bytes,
-                                            source_hw_results.data(), &err));
+    OCL_CHECK(err, cl::Buffer buffer_output(context, CL_MEM_USE_HOST_PTR | CL_MEM_READ_WRITE,
+                                        sizeof(float) * NI * (NJ/WIDTH_FACTOR), C_hw.data(), &err));
+    OCL_CHECK(err, cl::Buffer buffer_in1(context, CL_MEM_USE_HOST_PTR | CL_MEM_READ_ONLY,
+                                         sizeof(float) * NI * (NK/WIDTH_FACTOR),A.data(), &err));
+    OCL_CHECK(err, cl::Buffer buffer_in2(context, CL_MEM_USE_HOST_PTR | CL_MEM_READ_ONLY,
+                                         sizeof(float) * NI * (NK/WIDTH_FACTOR), B.data(), &err));
 
-    int size = DATA_SIZE;
 
-    OCL_CHECK(err, err = krnl_mmult.setArg(0, buffer_in1));
-    OCL_CHECK(err, err = krnl_mmult.setArg(1, buffer_in2));
-    OCL_CHECK(err, err = krnl_mmult.setArg(2, buffer_output));
-    OCL_CHECK(err, err = krnl_mmult.setArg(3, size));
+    //int size = DATA_SIZE;
+
+    OCL_CHECK(err, err = krnl_mmult.setArg(0, buffer_output));
+    OCL_CHECK(err, err = krnl_mmult.setArg(1, buffer_in1));
+    OCL_CHECK(err, err = krnl_mmult.setArg(2, buffer_in2));
+    
+    //OCL_CHECK(err, err = krnl_mmult.setArg(3, size));
 
     // Copy input data to device global memory
     OCL_CHECK(err, err = q.enqueueMigrateMemObjects({buffer_in1, buffer_in2}, 0 /* 0 means from host*/));
 
     // Launch the Kernel
     OCL_CHECK(err, err = q.enqueueTask(krnl_mmult));
-    q.finish();
+    //q.finish();
 
     // Copy Result from Device Global Memory to Host Local Memory
     OCL_CHECK(err, err = q.enqueueMigrateMemObjects({buffer_output}, CL_MIGRATE_MEM_OBJECT_HOST));
