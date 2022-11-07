@@ -98,9 +98,9 @@ int main(int argc, char** argv) {
     std::vector<float, aligned_allocator<float> > B1(NI * (NK));
     std::vector<float, aligned_allocator<float> > C_sw(NI * (NJ));
 
-    std::vector<float, aligned_allocator<float> > A(NI * (NK/WIDTH_FACTOR));
-    std::vector<float, aligned_allocator<float> > B(NI * (NK/WIDTH_FACTOR));
-    std::vector<float, aligned_allocator<float> > C_hw(NI * (NJ/WIDTH_FACTOR));
+    std::vector<float, aligned_allocator<float> > A(NI * (NK));
+    std::vector<float, aligned_allocator<float> > B(NI * (NK));
+    std::vector<float, aligned_allocator<float> > C_hw(NI * (NJ));
     
 
 
@@ -115,6 +115,16 @@ int main(int argc, char** argv) {
   for (i = 0; i < NK; i++)
     for (j = 0; j < NJ; j++)
       B1[i*NJ+j] = (float)(i*(j+2) % NJ) / NJ;
+
+      for (i = 0; i < NI; i++)
+    for (j = 0; j < NJ; j++)
+      C_hw[i*NJ+j] = (float)((i*j+1) % NI) / NI;
+  for (i = 0; i < NI; i++)
+    for (j = 0; j < NK; j++)
+      A[i*NK+j] = (float)(i*(j+1) % NK) / NK;
+  for (i = 0; i < NK; i++)
+    for (j = 0; j < NJ; j++)
+      B[i*NJ+j] = (float)(i*(j+2) % NJ) / NJ;
 
     int k;
 
@@ -164,11 +174,11 @@ int main(int argc, char** argv) {
 
     // Allocate Buffer in Global Memory
     OCL_CHECK(err, cl::Buffer buffer_output(context, CL_MEM_USE_HOST_PTR | CL_MEM_READ_WRITE,
-                                        sizeof(float) * NI * (NJ/WIDTH_FACTOR), C_hw.data(), &err));
+                                        sizeof(float) * NI * (NJ), C_hw.data(), &err));
     OCL_CHECK(err, cl::Buffer buffer_in1(context, CL_MEM_USE_HOST_PTR | CL_MEM_READ_ONLY,
-                                         sizeof(float) * NI * (NK/WIDTH_FACTOR),A.data(), &err));
+                                         sizeof(float) * NI * (NK),A.data(), &err));
     OCL_CHECK(err, cl::Buffer buffer_in2(context, CL_MEM_USE_HOST_PTR | CL_MEM_READ_ONLY,
-                                         sizeof(float) * NI * (NK/WIDTH_FACTOR), B.data(), &err));
+                                         sizeof(float) * NI * (NK), B.data(), &err));
 
 
     //int size = DATA_SIZE;
