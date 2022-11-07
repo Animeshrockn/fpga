@@ -134,11 +134,11 @@ int main(int argc, char** argv) {
 //C is NIxNJ
   for (i = 0; i < NI; i++) {
     for (j = 0; j < NJ; j++) {
-      C[i*NJ+j] *= beta;
+      C_sw[i*NJ+j] *= beta;
     }
     for (j = 0; j < NJ; j++) {
       for (k = 0; k < NK; ++k) {
-    C[i*NJ+j] += alpha * A[i*NK+k] * B[k*NJ+j];
+    C_sw[i*NJ+j] += alpha * A1[i*NK+k] * B1[k*NJ+j];
       }
     }
   }

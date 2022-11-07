@@ -25,8 +25,10 @@
 #define tile_size 16
 #define T tile_size 
 
-#define float alpha 1.5
-#define float beta 2.5
+const float aval = 1.5;
+const float bval  = 2.5;
+#define alpha aval
+#define beta bval
 
 extern "C"
 void kernel_gemm (float C[NI*NJ], float A[NI*NK], float B[NK*NJ]);
